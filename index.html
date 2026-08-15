@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DUA ONLINE PK</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f4f7f9;
+  color:#17212b;
+}
+header{
+  background:#087f5b;
+  color:white;
+  padding:25px 18px;
+  text-align:center;
+}
+header h1{margin:0;font-size:30px}
+header p{margin:8px 0 0}
+.container{
+  max-width:850px;
+  margin:25px auto;
+  padding:15px;
+}
+.card{
+  background:white;
+  border-radius:15px;
+  padding:20px;
+  margin-bottom:20px;
+  box-shadow:0 4px 15px rgba(0,0,0,.08);
+}
+h2{margin-top:0;color:#087f5b}
+input,button{
+  width:100%;
+  padding:12px;
+  margin:6px 0;
+  border-radius:8px;
+  border:1px solid #ccc;
+  font-size:16px;
+}
+button{
+  background:#087f5b;
+  color:white;
+  border:0;
+  cursor:pointer;
+  font-weight:bold;
+}
+button:hover{opacity:.9}
+.row{
+  display:grid;
+  grid-template-columns:2fr 1fr 1fr;
+  gap:8px;
+}
+.total{
+  font-size:18px;
+  line-height:1.8;
+  text-align:right;
+}
+.final{
+  font-size:25px;
+  color:#087f5b;
+  font-weight:bold;
+}
+.remove{
+  background:#c92a2a;
+}
+.print{
+  background:#343a40;
+}
+footer{
+  text-align:center;
+  padding:25px;
+  color:#666;
+}
+@media(max-width:600px){
+  .row{grid-template-columns:1fr}
+}
+@media print{
+  .no-print{display:none}
+  body{background:white}
+  .card{box-shadow:none}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>💊 DUA ONLINE PK</h1>
+  <p>Online Medicine Store • Digital Billing</p>
+</header>
+
+<div class="container">
+
+<div class="card no-print">
+  <h2>🧾 Create Medicine Bill</h2>
+
+  <input id="customer" placeholder="Customer Name">
+
+  <div id="items"></div>
+
+  <button onclick="addItem()">＋ Add Medicine</button>
+
+  <input id="discount" type="number" value="10" min="0" max="100"
+         oninput="calculate()" placeholder="Discount %">
+
+  <button onclick="calculate()">Calculate Bill</button>
+  <button class="print" onclick="window.print()">🖨️ Print / Save Bill</button>
+</div>
+
+<div class="card" id="bill">
+
+  <h2 style="text-align:center">DUA ONLINE PK</h2>
+  <p style="text-align:center">MEDICINE SALES BILL</p>
+  <hr>
+
+  <p><b>Customer:</b> <span id="billCustomer">Walk-in Customer</span></p>
+  <p><b>Date:</b> <span id="date"></span></p>
+
+  <div id="billItems"></div>
+
+  <hr>
+
+  <div class="total">
+    <div>Subtotal: Rs. <span id="subtotal">0.00</span></div>
+    <div>Discount: <span id="discountPercent">10</span>%</div>
+    <div>Discount Amount: Rs. <span id="discountAmount">0.00</span></div>
+    <div class="final">
+      NET PAYABLE: Rs. <span id="finalTotal">0.00</span>
+    </div>
+  </div>
+
+  <hr>
+
+  <p style="text-align:center">
+    <b>Thank you for choosing DUA ONLINE PK.</b><br>
+    Please keep this bill for your records.
+  </p>
+
+</div>
+
+</div>
+
+<footer>
+  © 2026 DUA ONLINE PK — All Rights Reserved
+</footer>
+
+<script>
+
+let items = [];
+
+function addItem(name="Inj. Meronem", price=3033, qty=1){
+
+  items.push({
+    name:name,
+    price:price,
+    qty:qty
+  });
+
+  renderItems();
+  calculate();
+}
+
+function renderItems(){
+
+  const box = document.getElementById("items");
+  box.innerHTML="";
+
+  items.forEach((item,index)=>{
+
+    box.innerHTML += `
+      <div class="row">
+        <input value="${item.name}"
+          onchange="items[${index}].name=this.value;calculate()">
+
+        <input type="number" min="1" value="${item.qty}"
+          onchange="items[${index}].qty=Number(this.value);calculate()">
+
+        <input type="number" min="0" value="${item.price}"
+          onchange="items[${index}].price=Number(this.value);calculate()">
+
+        <button class="remove"
+          onclick="removeItem(${index})">Remove</button>
+      </div>
+    `;
+  });
+}
+
+function removeItem(index){
+  items.splice(index,1);
+  renderItems();
+  calculate();
+}
+
+function calculate(){
+
+  let subtotal=0;
+  const bill=document.getElementById("billItems");
+
+  bill.innerHTML="";
+
+  items.forEach(item=>{
+
+    let amount=item.qty * item.price;
+    subtotal += amount;
+
+    bill.innerHTML += `
+      <p>
+        <b>${item.name}</b><br>
+        ${item.qty} × Rs. ${item.price.toFixed(2)}
+        = <b>Rs. ${amount.toFixed(2)}</b>
+      </p>
+    `;
+  });
+
+  let discountPercent =
+    Number(document.getElementById("discount").value) || 0;
+
+  let discountAmount =
+    subtotal * discountPercent / 100;
+
+  let finalTotal =
+    subtotal - discountAmount;
+
+  document.getElementById("subtotal").textContent =
+    subtotal.toFixed(2);
+
+  document.getElementById("discountPercent").textContent =
+    discountPercent;
+
+  document.getElementById("discountAmount").textContent =
+    discountAmount.toFixed(2);
+
+  document.getElementById("finalTotal").textContent =
+    finalTotal.toFixed(2);
+
+  document.getElementById("billCustomer").textContent =
+    document.getElementById("customer").value || "Walk-in Customer";
+}
+
+document.getElementById("customer").addEventListener("input",calculate);
+
+document.getElementById("date").textContent =
+  new Date().toLocaleDateString();
+
+addItem();
+
+</script>
+
+</body>
+</html>
