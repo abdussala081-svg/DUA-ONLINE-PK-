@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>DUA ONLINE PK | Online Medicine Store</title>
+<title>DUA ONLINE PK | Medicine Store</title>
 
 <style>
 *{
@@ -32,12 +32,26 @@ header h1{
 
 header p{
   margin:8px 0 0;
+  font-size:15px;
 }
 
 .container{
-  max-width:1000px;
+  max-width:900px;
   margin:auto;
-  padding:15px;
+  padding:20px 15px;
+}
+
+.card{
+  background:white;
+  border-radius:16px;
+  padding:20px;
+  margin-bottom:20px;
+  box-shadow:0 4px 15px rgba(0,0,0,.08);
+}
+
+h2{
+  color:#087f5b;
+  margin-top:0;
 }
 
 .search{
@@ -56,42 +70,46 @@ header p{
 }
 
 .product{
-  background:white;
-  padding:18px;
+  border:1px solid #e2e2e2;
   border-radius:12px;
-  box-shadow:0 2px 8px rgba(0,0,0,.08);
+  padding:15px;
 }
 
 .product h3{
-  margin-top:0;
+  margin:0 0 8px;
+  font-size:18px;
+}
+
+.category{
+  color:#777;
+  font-size:13px;
+  margin-bottom:10px;
 }
 
 .price{
+  color:#087f5b;
   font-size:20px;
   font-weight:bold;
-  color:#087f5b;
+  margin-bottom:12px;
 }
 
 button{
   border:0;
-  border-radius:8px;
-  padding:11px 15px;
-  cursor:pointer;
+  border-radius:9px;
+  padding:12px 15px;
+  font-size:15px;
   font-weight:bold;
+  cursor:pointer;
 }
 
-.add{
+.add-btn{
+  width:100%;
   background:#087f5b;
   color:white;
-  width:100%;
 }
 
-.cart{
-  background:white;
-  margin-top:25px;
-  padding:20px;
-  border-radius:12px;
-  box-shadow:0 2px 8px rgba(0,0,0,.08);
+.add-btn:hover{
+  background:#066a4b;
 }
 
 .cart-item{
@@ -103,61 +121,139 @@ button{
   border-bottom:1px solid #eee;
 }
 
+.cart-info{
+  flex:1;
+}
+
+.cart-info strong{
+  display:block;
+}
+
+.qty{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
 .qty button{
-  padding:5px 10px;
-  background:#eee;
+  padding:6px 10px;
+  background:#e9ecef;
 }
 
-.summary{
-  margin-top:15px;
-  line-height:1.8;
+.remove{
+  background:#dc3545;
+  color:white;
+  padding:7px 10px;
 }
 
-.discount{
+.total-box{
+  margin-top:20px;
+  border-top:2px solid #eee;
+  padding-top:15px;
+}
+
+.total-row{
+  display:flex;
+  justify-content:space-between;
+  margin:8px 0;
+}
+
+.net{
+  font-size:24px;
+  font-weight:bold;
   color:#087f5b;
-  font-weight:bold;
 }
 
-.total{
-  font-size:22px;
-  font-weight:bold;
-}
-
-input,textarea{
+input{
   width:100%;
   padding:13px;
-  margin:7px 0;
   border:1px solid #ddd;
-  border-radius:8px;
-  font-size:15px;
+  border-radius:9px;
+  margin-bottom:12px;
+  font-size:16px;
 }
 
-.order{
+.whatsapp-btn{
   width:100%;
+  padding:16px;
+  margin-top:15px;
   background:#25D366;
   color:white;
-  font-size:17px;
+  font-size:18px;
+}
+
+.print-btn{
+  width:100%;
   margin-top:10px;
+  background:#343a40;
+  color:white;
 }
 
-.notice{
-  background:#fff3cd;
-  padding:12px;
-  border-radius:8px;
-  margin:15px 0;
-  font-size:14px;
+.clear-btn{
+  width:100%;
+  margin-top:10px;
+  background:#dc3545;
+  color:white;
 }
 
-.empty{
-  color:#777;
+.bill{
+  background:white;
+  padding:25px;
+  border-radius:15px;
+  margin-top:20px;
+}
+
+.bill-header{
+  text-align:center;
+  color:#087f5b;
+}
+
+.bill-line{
+  border-bottom:1px solid #ddd;
+  padding:10px 0;
 }
 
 footer{
   text-align:center;
   padding:25px;
-  margin-top:30px;
-  background:#17212b;
-  color:white;
+  color:#666;
+}
+
+.notice{
+  background:#fff3cd;
+  border:1px solid #ffe69c;
+  padding:12px;
+  border-radius:9px;
+  font-size:13px;
+  margin-bottom:15px;
+}
+
+@media(max-width:600px){
+  .cart-item{
+    flex-wrap:wrap;
+  }
+
+  .products{
+    grid-template-columns:1fr;
+  }
+}
+
+@media print{
+  body *{
+    visibility:hidden;
+  }
+
+  #bill,
+  #bill *{
+    visibility:visible;
+  }
+
+  #bill{
+    position:absolute;
+    left:0;
+    top:0;
+    width:100%;
+  }
 }
 </style>
 </head>
@@ -166,94 +262,185 @@ footer{
 
 <header>
   <h1>💊 DUA ONLINE PK</h1>
-  <p>Being a part of your comfort</p>
+  <p>ONLINE MEDICINE STORE • Being a part of your comfort</p>
 </header>
 
 <div class="container">
 
-  <div class="notice">
-    ⚠️ Prescription medicines should only be supplied against a valid prescription and in accordance with applicable local laws.
+  <div class="card">
+
+    <div class="notice">
+      Medicines are supplied subject to applicable laws and prescription
+      requirements. Prescription medicines should only be dispensed against
+      a valid prescription by an appropriately licensed pharmacy.
+    </div>
+
+    <h2>🛒 Medicine Store</h2>
+
+    <input
+      type="text"
+      id="search"
+      class="search"
+      placeholder="Search medicine..."
+      oninput="displayProducts()"
+    >
+
+    <div id="products" class="products"></div>
+
   </div>
 
-  <input
-    type="text"
-    id="search"
-    class="search"
-    placeholder="🔎 Search medicine..."
-    oninput="showProducts()"
-  >
 
-  <h2>Our Medicines</h2>
-
-  <div id="products" class="products"></div>
-
-  <div class="cart">
+  <div class="card">
 
     <h2>🛒 Your Cart</h2>
 
-    <div id="cartItems">
-      <p class="empty">Your cart is empty.</p>
+    <div id="cart">
+      <p>Your cart is empty.</p>
     </div>
 
-    <div class="summary">
+    <div class="total-box">
 
-      <div>
-        Subtotal:
+      <div class="total-row">
+        <span>Subtotal</span>
         <strong>Rs. <span id="subtotal">0.00</span></strong>
       </div>
 
-      <div class="discount">
-        10% Discount:
-        - Rs. <span id="discount">0.00</span>
+      <div class="total-row">
+        <span>Discount</span>
+        <strong>10%</strong>
       </div>
 
-      <div class="total">
-        Final Total:
-        Rs. <span id="total">0.00</span>
+      <div class="total-row">
+        <span>Discount Amount</span>
+        <strong>Rs. <span id="discount">0.00</span></strong>
+      </div>
+
+      <div class="total-row net">
+        <span>Net Payable</span>
+        <span>Rs. <span id="total">0.00</span></span>
       </div>
 
     </div>
 
-    <h3>Customer Details</h3>
+  </div>
+
+
+  <div class="card">
+
+    <h2>👤 Customer Information</h2>
 
     <input
-      id="customerName"
       type="text"
-      placeholder="Your name"
+      id="customerName"
+      placeholder="Customer name"
     >
 
     <input
-      id="customerPhone"
       type="tel"
-      placeholder="Phone number"
+      id="customerPhone"
+      placeholder="Customer phone number"
     >
 
-    <textarea
-      id="customerAddress"
-      rows="4"
-      placeholder="Delivery address"
-    ></textarea>
-
-    <button class="order" onclick="placeOrder()">
-      📲 Place Order on WhatsApp
+    <button
+      class="whatsapp-btn"
+      onclick="placeOrder()"
+    >
+      📱 Order on WhatsApp
     </button>
+
+    <button
+      class="print-btn"
+      onclick="generateBill()"
+    >
+      🖨️ Print / Save Bill
+    </button>
+
+    <button
+      class="clear-btn"
+      onclick="clearCart()"
+    >
+      🗑️ Clear Cart
+    </button>
+
+  </div>
+
+
+  <div id="bill" class="bill">
+
+    <div class="bill-header">
+      <h1>DUA ONLINE PK</h1>
+      <h2>MEDICINE SALES BILL</h2>
+    </div>
+
+    <hr>
+
+    <p>
+      <strong>Customer:</strong>
+      <span id="billCustomer">Walk-in Customer</span>
+    </p>
+
+    <p>
+      <strong>Phone:</strong>
+      <span id="billPhone">-</span>
+    </p>
+
+    <p>
+      <strong>Date:</strong>
+      <span id="billDate"></span>
+    </p>
+
+    <div id="billItems"></div>
+
+    <hr>
+
+    <div class="total-row">
+      <span>Subtotal:</span>
+      <strong>Rs. <span id="billSubtotal">0.00</span></strong>
+    </div>
+
+    <div class="total-row">
+      <span>Discount:</span>
+      <strong>10%</strong>
+    </div>
+
+    <div class="total-row">
+      <span>Discount Amount:</span>
+      <strong>Rs. <span id="billDiscount">0.00</span></strong>
+    </div>
+
+    <h2 style="text-align:right;">
+      NET PAYABLE:
+      Rs. <span id="billTotal">0.00</span>
+    </h2>
+
+    <hr>
+
+    <p style="text-align:center;">
+      Thank you for choosing <strong>DUA ONLINE PK</strong>.
+    </p>
 
   </div>
 
 </div>
 
+
 <footer>
-  © 2026 DUA ONLINE PK<br>
-  Online Medicine Store
+  © 2026 DUA ONLINE PK
 </footer>
 
 
 <script>
 
 /* =================================
+   WHATSAPP NUMBER
+   ================================= */
+
+const whatsappNumber = "923121881911";
+
+
+/* =================================
    PRODUCT DATABASE
-   Add your medicines here
-================================= */
+   ================================= */
 
 const products = [
 
@@ -276,20 +463,20 @@ const products = [
   },
 
   {
-    name:"Azithromycin",
-    price:350,
-    category:"Tablet"
+    name:"Inj. RISEK 40 mg",
+    price:545,
+    category:"Injection"
   },
 
   {
-    name:"Ibuprofen",
-    price:150,
-    category:"Tablet"
+    name:"Inj. Onset 8 mg",
+    price:265,
+    category:"Injection"
   },
 
   {
-    name:"Ceftriaxone",
-    price:500,
+    name:"Inj. Aminovel",
+    price:2100,
     category:"Injection"
   }
 
@@ -298,353 +485,48 @@ const products = [
 
 /* =================================
    CART
-================================= */
+   ================================= */
 
 let cart = [];
 
 
 /* =================================
-   SHOW PRODUCTS
-================================= */
+   DISPLAY PRODUCTS
+   ================================= */
 
-function showProducts(){
+function displayProducts(){
+
+  const container = document.getElementById("products");
 
   const search =
-    document.getElementById("search")
-    .value
-    .toLowerCase();
-
-  const container =
-    document.getElementById("products");
+    document.getElementById("search").value
+    .toLowerCase()
+    .trim();
 
   container.innerHTML = "";
 
-  const filtered =
-    products.filter(product =>
-      product.name.toLowerCase().includes(search)
-    );
+  const filtered = products.filter(product =>
+    product.name.toLowerCase().includes(search) ||
+    product.category.toLowerCase().includes(search)
+  );
+
+  if(filtered.length === 0){
+
+    container.innerHTML =
+      "<p>No medicine found.</p>";
+
+    return;
+  }
 
   filtered.forEach((product,index)=>{
 
-    const div =
-      document.createElement("div");
+    const div = document.createElement("div");
 
-    div.className="product";
+    div.className = "product";
 
-    div.innerHTML=`
+    div.innerHTML = `
 
       <h3>${product.name}</h3>
 
-      <p>
-        Category:
-        ${product.category}
-      </p>
-
-      <p class="price">
-        Rs. ${product.price.toLocaleString()}
-      </p>
-
-      <button
-        class="add"
-        onclick="addToCart(${products.indexOf(product)})"
-      >
-        🛒 Add to Cart
-      </button>
-
-    `;
-
-    container.appendChild(div);
-
-  });
-
-}
-
-
-/* =================================
-   ADD TO CART
-================================= */
-
-function addToCart(index){
-
-  const product = products[index];
-
-  const existing =
-    cart.find(item =>
-      item.name === product.name
-    );
-
-  if(existing){
-
-    existing.quantity++;
-
-  }else{
-
-    cart.push({
-      name:product.name,
-      price:product.price,
-      quantity:1
-    });
-
-  }
-
-  updateCart();
-
-}
-
-
-/* =================================
-   CHANGE QUANTITY
-================================= */
-
-function changeQuantity(index,change){
-
-  cart[index].quantity += change;
-
-  if(cart[index].quantity <= 0){
-
-    cart.splice(index,1);
-
-  }
-
-  updateCart();
-
-}
-
-
-/* =================================
-   UPDATE CART
-================================= */
-
-function updateCart(){
-
-  const container =
-    document.getElementById("cartItems");
-
-  container.innerHTML="";
-
-  if(cart.length===0){
-
-    container.innerHTML =
-      '<p class="empty">Your cart is empty.</p>';
-
-  }
-
-  let subtotal=0;
-
-  cart.forEach((item,index)=>{
-
-    const itemTotal =
-      item.price * item.quantity;
-
-    subtotal += itemTotal;
-
-    const div =
-      document.createElement("div");
-
-    div.className="cart-item";
-
-    div.innerHTML=`
-
-      <div>
-        <strong>${item.name}</strong><br>
-        Rs. ${item.price.toLocaleString()}
-      </div>
-
-      <div class="qty">
-
-        <button
-          onclick="changeQuantity(${index},-1)"
-        >
-          −
-        </button>
-
-        <strong>${item.quantity}</strong>
-
-        <button
-          onclick="changeQuantity(${index},1)"
-        >
-          +
-        </button>
-
-      </div>
-
-      <strong>
-        Rs. ${itemTotal.toLocaleString()}
-      </strong>
-
-    `;
-
-    container.appendChild(div);
-
-  });
-
-
-  const discount =
-    subtotal * 0.10;
-
-  const total =
-    subtotal - discount;
-
-
-  document.getElementById("subtotal")
-    .textContent =
-    subtotal.toFixed(2);
-
-  document.getElementById("discount")
-    .textContent =
-    discount.toFixed(2);
-
-  document.getElementById("total")
-    .textContent =
-    total.toFixed(2);
-
-}
-
-
-/* =================================
-   WHATSAPP ORDER
-================================= */
-
-/*
-   IMPORTANT:
-   Replace the number below with
-   your WhatsApp number.
-
-   Pakistan example:
-   923001234567
-
-   Do NOT put + before the number.
-*/
-
-const whatsappNumber = "923121881911";
-
-
-
-function placeOrder(){
-
-  if(cart.length===0){
-
-    alert("Please add a medicine to your cart first.");
-
-    return;
-
-  }
-
-
-  const name =
-    document.getElementById("customerName")
-    .value.trim();
-
-  const phone =
-    document.getElementById("customerPhone")
-    .value.trim();
-
-  const address =
-    document.getElementById("customerAddress")
-    .value.trim();
-
-
-  if(!name || !phone || !address){
-
-    alert(
-      "Please enter your name, phone number and delivery address."
-    );
-
-    return;
-
-  }
-
-
-  let message =
-    "💊 *DUA ONLINE PK - NEW ORDER*%0A%0A";
-
-
-  message +=
-    "*Customer:* " +
-    name +
-    "%0A";
-
-  message +=
-    "*Phone:* " +
-    phone +
-    "%0A";
-
-  message +=
-    "*Address:* " +
-    address +
-    "%0A%0A";
-
-
-  message +=
-    "*ORDER DETAILS:*%0A";
-
-
-  let subtotal=0;
-
-
-  cart.forEach(item=>{
-
-    const itemTotal =
-      item.price * item.quantity;
-
-    subtotal += itemTotal;
-
-    message +=
-      "• " +
-      item.name +
-      " × " +
-      item.quantity +
-      " = Rs. " +
-      itemTotal.toFixed(2) +
-      "%0A";
-
-  });
-
-
-  const discount =
-    subtotal * 0.10;
-
-  const total =
-    subtotal - discount;
-
-
-  message += "%0A";
-
-  message +=
-    "*Subtotal:* Rs. " +
-    subtotal.toFixed(2) +
-    "%0A";
-
-  message +=
-    "*10% Discount:* - Rs. " +
-    discount.toFixed(2) +
-    "%0A";
-
-  message +=
-    "*FINAL TOTAL:* Rs. " +
-    total.toFixed(2);
-
-
-  const url =
-    "https://wa.me/" +
-    whatsappNumber +
-    "?text=" +
-    message;
-
-
-  window.open(url,"_blank");
-
-}
-
-
-/* =================================
-   START WEBSITE
-================================= */
-
-showProducts();
-updateCart();
-
-</script>
-
-</body>
-</html>
+      <div class="category">
+        ${product.category
