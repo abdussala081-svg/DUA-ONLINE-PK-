@@ -1,12 +1,15 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DUA ONLINE PK</title>
+
+<title>DUA ONLINE PK | Online Medicine Store</title>
 
 <style>
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+}
 
 body{
   margin:0;
@@ -18,13 +21,13 @@ body{
 header{
   background:#087f5b;
   color:white;
-  padding:28px 15px;
+  padding:25px 15px;
   text-align:center;
 }
 
 header h1{
   margin:0;
-  font-size:32px;
+  font-size:30px;
 }
 
 header p{
@@ -32,122 +35,129 @@ header p{
 }
 
 .container{
-  max-width:900px;
-  margin:25px auto;
+  max-width:1000px;
+  margin:auto;
   padding:15px;
 }
 
-.card{
-  background:white;
-  border-radius:16px;
-  padding:22px;
-  margin-bottom:20px;
-  box-shadow:0 4px 18px rgba(0,0,0,.08);
-}
-
-h2{
-  color:#087f5b;
-  margin-top:0;
-}
-
-input,select,button{
+.search{
   width:100%;
-  padding:13px;
-  margin:6px 0;
-  border-radius:9px;
-  border:1px solid #ccc;
+  padding:14px;
+  border:1px solid #ddd;
+  border-radius:10px;
   font-size:16px;
+  margin-bottom:15px;
 }
 
-button{
-  background:#087f5b;
-  color:white;
-  border:none;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-button:hover{
-  opacity:.9;
+.products{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:15px;
 }
 
 .product{
-  border:1px solid #ddd;
+  background:white;
+  padding:18px;
   border-radius:12px;
-  padding:15px;
-  margin:10px 0;
+  box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+
+.product h3{
+  margin-top:0;
+}
+
+.price{
+  font-size:20px;
+  font-weight:bold;
+  color:#087f5b;
+}
+
+button{
+  border:0;
+  border-radius:8px;
+  padding:11px 15px;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+.add{
+  background:#087f5b;
+  color:white;
+  width:100%;
+}
+
+.cart{
+  background:white;
+  margin-top:25px;
+  padding:20px;
+  border-radius:12px;
+  box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+
+.cart-item{
   display:flex;
   justify-content:space-between;
   align-items:center;
   gap:10px;
-}
-
-.product button{
-  width:auto;
-  padding:10px 16px;
-}
-
-.price{
-  font-weight:bold;
-  color:#087f5b;
-}
-
-.bill-item{
-  padding:10px 0;
+  padding:12px 0;
   border-bottom:1px solid #eee;
 }
 
-.total{
-  text-align:right;
-  line-height:1.9;
-  font-size:17px;
+.qty button{
+  padding:5px 10px;
+  background:#eee;
 }
 
-.final{
-  font-size:25px;
-  font-weight:bold;
+.summary{
+  margin-top:15px;
+  line-height:1.8;
+}
+
+.discount{
   color:#087f5b;
+  font-weight:bold;
 }
 
-.remove{
-  background:#c92a2a;
-  width:auto;
-  padding:7px 12px;
+.total{
+  font-size:22px;
+  font-weight:bold;
 }
 
-.print{
-  background:#343a40;
+input,textarea{
+  width:100%;
+  padding:13px;
+  margin:7px 0;
+  border:1px solid #ddd;
+  border-radius:8px;
+  font-size:15px;
+}
+
+.order{
+  width:100%;
+  background:#25D366;
+  color:white;
+  font-size:17px;
+  margin-top:10px;
+}
+
+.notice{
+  background:#fff3cd;
+  padding:12px;
+  border-radius:8px;
+  margin:15px 0;
+  font-size:14px;
+}
+
+.empty{
+  color:#777;
 }
 
 footer{
   text-align:center;
   padding:25px;
-  color:#666;
-}
-
-@media(max-width:600px){
-  .product{
-    flex-direction:column;
-    align-items:stretch;
-  }
-
-  .product button{
-    width:100%;
-  }
-}
-
-@media print{
-  .no-print{
-    display:none!important;
-  }
-
-  body{
-    background:white;
-  }
-
-  .card{
-    box-shadow:none;
-  }
+  margin-top:30px;
+  background:#17212b;
+  color:white;
 }
 </style>
 </head>
@@ -156,227 +166,205 @@ footer{
 
 <header>
   <h1>💊 DUA ONLINE PK</h1>
-  <p>Online Medicine Store • Digital Billing</p>
+  <p>Being a part of your comfort</p>
 </header>
 
 <div class="container">
 
-<!-- PRODUCT CATALOG -->
-<div class="card no-print">
-  <h2>💊 Medicine Catalog</h2>
+  <div class="notice">
+    ⚠️ Prescription medicines should only be supplied against a valid prescription and in accordance with applicable local laws.
+  </div>
 
   <input
     type="text"
     id="search"
-    placeholder="Search medicine..."
+    class="search"
+    placeholder="🔎 Search medicine..."
     oninput="showProducts()"
   >
 
-  <div id="products"></div>
-</div>
+  <h2>Our Medicines</h2>
 
-<!-- BILL -->
-<div class="card no-print">
+  <div id="products" class="products"></div>
 
-  <h2>🧾 Create Medicine Bill</h2>
+  <div class="cart">
 
-  <input
-    type="text"
-    id="customer"
-    placeholder="Customer Name"
-    oninput="calculate()"
-  >
+    <h2>🛒 Your Cart</h2>
 
-  <div id="selectedItems"></div>
-
-  <label><b>Discount (%)</b></label>
-
-  <input
-    type="number"
-    id="discount"
-    value="10"
-    min="0"
-    max="100"
-    oninput="calculate()"
-  >
-
-  <button onclick="calculate()">
-    Calculate Bill
-  </button>
-
-  <button class="print" onclick="window.print()">
-    🖨️ Print / Save Bill
-  </button>
-
-</div>
-
-<!-- PRINTABLE INVOICE -->
-<div class="card" id="bill">
-
-  <h2 style="text-align:center">
-    DUA ONLINE PK
-  </h2>
-
-  <p style="text-align:center">
-    <b>MEDICINE SALES BILL</b>
-  </p>
-
-  <hr>
-
-  <p>
-    <b>Customer:</b>
-    <span id="billCustomer">Walk-in Customer</span>
-  </p>
-
-  <p>
-    <b>Date:</b>
-    <span id="date"></span>
-  </p>
-
-  <div id="billItems"></div>
-
-  <hr>
-
-  <div class="total">
-
-    <div>
-      Subtotal: Rs.
-      <span id="subtotal">0.00</span>
+    <div id="cartItems">
+      <p class="empty">Your cart is empty.</p>
     </div>
 
-    <div>
-      Discount:
-      <span id="discountPercent">10</span>%
+    <div class="summary">
+
+      <div>
+        Subtotal:
+        <strong>Rs. <span id="subtotal">0.00</span></strong>
+      </div>
+
+      <div class="discount">
+        10% Discount:
+        - Rs. <span id="discount">0.00</span>
+      </div>
+
+      <div class="total">
+        Final Total:
+        Rs. <span id="total">0.00</span>
+      </div>
+
     </div>
 
-    <div>
-      Discount Amount: Rs.
-      <span id="discountAmount">0.00</span>
-    </div>
+    <h3>Customer Details</h3>
 
-    <div class="final">
-      NET PAYABLE: Rs.
-      <span id="finalTotal">0.00</span>
-    </div>
+    <input
+      id="customerName"
+      type="text"
+      placeholder="Your name"
+    >
+
+    <input
+      id="customerPhone"
+      type="tel"
+      placeholder="Phone number"
+    >
+
+    <textarea
+      id="customerAddress"
+      rows="4"
+      placeholder="Delivery address"
+    ></textarea>
+
+    <button class="order" onclick="placeOrder()">
+      📲 Place Order on WhatsApp
+    </button>
 
   </div>
-
-  <hr>
-
-  <p style="text-align:center">
-    <b>Thank you for choosing DUA ONLINE PK.</b>
-    <br>
-    Please keep this bill for your records.
-  </p>
-
-</div>
 
 </div>
 
 <footer>
-  © 2026 DUA ONLINE PK
+  © 2026 DUA ONLINE PK<br>
+  Online Medicine Store
 </footer>
+
 
 <script>
 
-/* =========================
+/* =================================
    PRODUCT DATABASE
    Add your medicines here
-========================= */
+================================= */
 
 const products = [
 
   {
-    name: "Inj. Meronem",
-    price: 3033,
-    category: "Injection"
+    name:"Inj. Meronem",
+    price:3033,
+    category:"Injection"
   },
 
   {
-    name: "Paracetamol",
-    price: 100,
-    category: "Tablet"
+    name:"Paracetamol",
+    price:100,
+    category:"Tablet"
   },
 
   {
-    name: "Amoxicillin",
-    price: 250,
-    category: "Capsule"
+    name:"Amoxicillin",
+    price:250,
+    category:"Capsule"
+  },
+
+  {
+    name:"Azithromycin",
+    price:350,
+    category:"Tablet"
+  },
+
+  {
+    name:"Ibuprofen",
+    price:150,
+    category:"Tablet"
+  },
+
+  {
+    name:"Ceftriaxone",
+    price:500,
+    category:"Injection"
   }
 
 ];
 
 
-/* =========================
-   BILL ITEMS
-========================= */
+/* =================================
+   CART
+================================= */
 
 let cart = [];
 
 
-/* =========================
+/* =================================
    SHOW PRODUCTS
-========================= */
+================================= */
 
 function showProducts(){
-
-  const box =
-    document.getElementById("products");
 
   const search =
     document.getElementById("search")
     .value
     .toLowerCase();
 
-  box.innerHTML = "";
+  const container =
+    document.getElementById("products");
 
-  products
-    .filter(product =>
+  container.innerHTML = "";
+
+  const filtered =
+    products.filter(product =>
       product.name.toLowerCase().includes(search)
-    )
-    .forEach((product,index)=>{
+    );
 
-      box.innerHTML += `
+  filtered.forEach((product,index)=>{
 
-        <div class="product">
+    const div =
+      document.createElement("div");
 
-          <div>
+    div.className="product";
 
-            <b>${product.name}</b>
+    div.innerHTML=`
 
-            <br>
+      <h3>${product.name}</h3>
 
-            <small>
-              ${product.category}
-            </small>
+      <p>
+        Category:
+        ${product.category}
+      </p>
 
-            <br>
+      <p class="price">
+        Rs. ${product.price.toLocaleString()}
+      </p>
 
-            <span class="price">
-              Rs. ${product.price.toFixed(2)}
-            </span>
+      <button
+        class="add"
+        onclick="addToCart(${products.indexOf(product)})"
+      >
+        🛒 Add to Cart
+      </button>
 
-          </div>
+    `;
 
-          <button
-            onclick="addProduct(${index})"
-          >
-            + Add
-          </button>
+    container.appendChild(div);
 
-        </div>
+  });
 
-      `;
-
-    });
 }
 
 
-/* =========================
-   ADD PRODUCT
-========================= */
+/* =================================
+   ADD TO CART
+================================= */
 
-function addProduct(index){
+function addToCart(index){
 
   const product = products[index];
 
@@ -387,243 +375,274 @@ function addProduct(index){
 
   if(existing){
 
-    existing.qty++;
+    existing.quantity++;
 
   }else{
 
     cart.push({
       name:product.name,
       price:product.price,
-      qty:1
+      quantity:1
     });
 
   }
 
-  renderCart();
-  calculate();
+  updateCart();
+
 }
 
 
-/* =========================
-   REMOVE PRODUCT
-========================= */
-
-function removeProduct(index){
-
-  cart.splice(index,1);
-
-  renderCart();
-  calculate();
-}
-
-
-/* =========================
+/* =================================
    CHANGE QUANTITY
-========================= */
+================================= */
 
-function changeQty(index,value){
+function changeQuantity(index,change){
 
-  let qty =
-    parseInt(value);
+  cart[index].quantity += change;
 
-  if(qty < 1){
-    qty = 1;
+  if(cart[index].quantity <= 0){
+
+    cart.splice(index,1);
+
   }
 
-  cart[index].qty = qty;
+  updateCart();
 
-  renderCart();
-  calculate();
 }
 
 
-/* =========================
-   DISPLAY CART
-========================= */
+/* =================================
+   UPDATE CART
+================================= */
 
-function renderCart(){
+function updateCart(){
 
-  const box =
-    document.getElementById(
-      "selectedItems"
-    );
+  const container =
+    document.getElementById("cartItems");
 
-  box.innerHTML = "";
+  container.innerHTML="";
 
-  if(cart.length === 0){
+  if(cart.length===0){
 
-    box.innerHTML =
-      "<p>No medicine selected yet.</p>";
+    container.innerHTML =
+      '<p class="empty">Your cart is empty.</p>';
 
-    return;
   }
+
+  let subtotal=0;
 
   cart.forEach((item,index)=>{
 
-    box.innerHTML += `
+    const itemTotal =
+      item.price * item.quantity;
 
-      <div class="bill-item">
+    subtotal += itemTotal;
 
-        <b>${item.name}</b>
+    const div =
+      document.createElement("div");
 
-        <br>
+    div.className="cart-item";
 
-        Rs. ${item.price.toFixed(2)}
+    div.innerHTML=`
 
-        ×
+      <div>
+        <strong>${item.name}</strong><br>
+        Rs. ${item.price.toLocaleString()}
+      </div>
 
-        <input
-          type="number"
-          min="1"
-          value="${item.qty}"
-          onchange="
-            changeQty(
-              ${index},
-              this.value
-            )
-          "
-          style="width:90px;
-                 display:inline-block;
-                 margin-left:8px;"
-        >
+      <div class="qty">
 
         <button
-          class="remove"
-          onclick="
-            removeProduct(${index})
-          "
+          onclick="changeQuantity(${index},-1)"
         >
-          Remove
+          −
+        </button>
+
+        <strong>${item.quantity}</strong>
+
+        <button
+          onclick="changeQuantity(${index},1)"
+        >
+          +
         </button>
 
       </div>
 
+      <strong>
+        Rs. ${itemTotal.toLocaleString()}
+      </strong>
+
     `;
 
+    container.appendChild(div);
+
   });
+
+
+  const discount =
+    subtotal * 0.10;
+
+  const total =
+    subtotal - discount;
+
+
+  document.getElementById("subtotal")
+    .textContent =
+    subtotal.toFixed(2);
+
+  document.getElementById("discount")
+    .textContent =
+    discount.toFixed(2);
+
+  document.getElementById("total")
+    .textContent =
+    total.toFixed(2);
+
 }
 
 
-/* =========================
-   CALCULATE BILL
-========================= */
+/* =================================
+   WHATSAPP ORDER
+================================= */
 
-function calculate(){
+/*
+   IMPORTANT:
+   Replace the number below with
+   your WhatsApp number.
 
-  let subtotal = 0;
+   Pakistan example:
+   923001234567
 
-  const bill =
-    document.getElementById(
-      "billItems"
+   Do NOT put + before the number.
+*/
+
+const whatsappNumber = "923121881911";
+
+
+
+function placeOrder(){
+
+  if(cart.length===0){
+
+    alert("Please add a medicine to your cart first.");
+
+    return;
+
+  }
+
+
+  const name =
+    document.getElementById("customerName")
+    .value.trim();
+
+  const phone =
+    document.getElementById("customerPhone")
+    .value.trim();
+
+  const address =
+    document.getElementById("customerAddress")
+    .value.trim();
+
+
+  if(!name || !phone || !address){
+
+    alert(
+      "Please enter your name, phone number and delivery address."
     );
 
-  bill.innerHTML = "";
+    return;
+
+  }
+
+
+  let message =
+    "💊 *DUA ONLINE PK - NEW ORDER*%0A%0A";
+
+
+  message +=
+    "*Customer:* " +
+    name +
+    "%0A";
+
+  message +=
+    "*Phone:* " +
+    phone +
+    "%0A";
+
+  message +=
+    "*Address:* " +
+    address +
+    "%0A%0A";
+
+
+  message +=
+    "*ORDER DETAILS:*%0A";
+
+
+  let subtotal=0;
+
 
   cart.forEach(item=>{
 
-    const amount =
-      item.price * item.qty;
+    const itemTotal =
+      item.price * item.quantity;
 
-    subtotal += amount;
+    subtotal += itemTotal;
 
-    bill.innerHTML += `
-
-      <div class="bill-item">
-
-        <b>${item.name}</b>
-
-        <br>
-
-        ${item.qty}
-        ×
-        Rs. ${item.price.toFixed(2)}
-
-        =
-
-        <b>
-          Rs. ${amount.toFixed(2)}
-        </b>
-
-      </div>
-
-    `;
+    message +=
+      "• " +
+      item.name +
+      " × " +
+      item.quantity +
+      " = Rs. " +
+      itemTotal.toFixed(2) +
+      "%0A";
 
   });
 
 
-  const discountPercent =
-    Number(
-      document.getElementById(
-        "discount"
-      ).value
-    ) || 0;
+  const discount =
+    subtotal * 0.10;
+
+  const total =
+    subtotal - discount;
 
 
-  const discountAmount =
-    subtotal *
-    discountPercent /
-    100;
+  message += "%0A";
+
+  message +=
+    "*Subtotal:* Rs. " +
+    subtotal.toFixed(2) +
+    "%0A";
+
+  message +=
+    "*10% Discount:* - Rs. " +
+    discount.toFixed(2) +
+    "%0A";
+
+  message +=
+    "*FINAL TOTAL:* Rs. " +
+    total.toFixed(2);
 
 
-  const finalTotal =
-    subtotal -
-    discountAmount;
+  const url =
+    "https://wa.me/" +
+    whatsappNumber +
+    "?text=" +
+    message;
 
 
-  document.getElementById(
-    "subtotal"
-  ).textContent =
-    subtotal.toFixed(2);
-
-
-  document.getElementById(
-    "discountPercent"
-  ).textContent =
-    discountPercent;
-
-
-  document.getElementById(
-    "discountAmount"
-  ).textContent =
-    discountAmount.toFixed(2);
-
-
-  document.getElementById(
-    "finalTotal"
-  ).textContent =
-    finalTotal.toFixed(2);
-
-
-  document.getElementById(
-    "billCustomer"
-  ).textContent =
-    document.getElementById(
-      "customer"
-    ).value ||
-    "Walk-in Customer";
+  window.open(url,"_blank");
 
 }
 
 
-/* =========================
-   DATE
-========================= */
-
-document.getElementById(
-  "date"
-).textContent =
-  new Date().toLocaleDateString();
-
-
-/* =========================
+/* =================================
    START WEBSITE
-========================= */
+================================= */
 
 showProducts();
-
-renderCart();
-
-calculate();
+updateCart();
 
 </script>
 
