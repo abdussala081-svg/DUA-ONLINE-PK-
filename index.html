@@ -7,82 +7,147 @@
 
 <style>
 *{box-sizing:border-box}
+
 body{
   margin:0;
   font-family:Arial,sans-serif;
   background:#f4f7f9;
   color:#17212b;
 }
+
 header{
   background:#087f5b;
   color:white;
-  padding:25px 18px;
+  padding:28px 15px;
   text-align:center;
 }
-header h1{margin:0;font-size:30px}
-header p{margin:8px 0 0}
+
+header h1{
+  margin:0;
+  font-size:32px;
+}
+
+header p{
+  margin:8px 0 0;
+}
+
 .container{
-  max-width:850px;
+  max-width:900px;
   margin:25px auto;
   padding:15px;
 }
+
 .card{
   background:white;
-  border-radius:15px;
-  padding:20px;
+  border-radius:16px;
+  padding:22px;
   margin-bottom:20px;
-  box-shadow:0 4px 15px rgba(0,0,0,.08);
+  box-shadow:0 4px 18px rgba(0,0,0,.08);
 }
-h2{margin-top:0;color:#087f5b}
-input,button{
+
+h2{
+  color:#087f5b;
+  margin-top:0;
+}
+
+input,select,button{
   width:100%;
-  padding:12px;
+  padding:13px;
   margin:6px 0;
-  border-radius:8px;
+  border-radius:9px;
   border:1px solid #ccc;
   font-size:16px;
 }
+
 button{
   background:#087f5b;
   color:white;
-  border:0;
-  cursor:pointer;
+  border:none;
   font-weight:bold;
+  cursor:pointer;
 }
-button:hover{opacity:.9}
-.row{
-  display:grid;
-  grid-template-columns:2fr 1fr 1fr;
-  gap:8px;
+
+button:hover{
+  opacity:.9;
 }
+
+.product{
+  border:1px solid #ddd;
+  border-radius:12px;
+  padding:15px;
+  margin:10px 0;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+}
+
+.product button{
+  width:auto;
+  padding:10px 16px;
+}
+
+.price{
+  font-weight:bold;
+  color:#087f5b;
+}
+
+.bill-item{
+  padding:10px 0;
+  border-bottom:1px solid #eee;
+}
+
 .total{
-  font-size:18px;
-  line-height:1.8;
   text-align:right;
+  line-height:1.9;
+  font-size:17px;
 }
+
 .final{
   font-size:25px;
-  color:#087f5b;
   font-weight:bold;
+  color:#087f5b;
 }
+
 .remove{
   background:#c92a2a;
+  width:auto;
+  padding:7px 12px;
 }
+
 .print{
   background:#343a40;
 }
+
 footer{
   text-align:center;
   padding:25px;
   color:#666;
 }
+
 @media(max-width:600px){
-  .row{grid-template-columns:1fr}
+  .product{
+    flex-direction:column;
+    align-items:stretch;
+  }
+
+  .product button{
+    width:100%;
+  }
 }
+
 @media print{
-  .no-print{display:none}
-  body{background:white}
-  .card{box-shadow:none}
+  .no-print{
+    display:none!important;
+  }
+
+  body{
+    background:white;
+  }
+
+  .card{
+    box-shadow:none;
+  }
 }
 </style>
 </head>
@@ -96,48 +161,111 @@ footer{
 
 <div class="container">
 
+<!-- PRODUCT CATALOG -->
 <div class="card no-print">
-  <h2>🧾 Create Medicine Bill</h2>
+  <h2>💊 Medicine Catalog</h2>
 
-  <input id="customer" placeholder="Customer Name">
+  <input
+    type="text"
+    id="search"
+    placeholder="Search medicine..."
+    oninput="showProducts()"
+  >
 
-  <div id="items"></div>
-
-  <button onclick="addItem()">＋ Add Medicine</button>
-
-  <input id="discount" type="number" value="10" min="0" max="100"
-         oninput="calculate()" placeholder="Discount %">
-
-  <button onclick="calculate()">Calculate Bill</button>
-  <button class="print" onclick="window.print()">🖨️ Print / Save Bill</button>
+  <div id="products"></div>
 </div>
 
+<!-- BILL -->
+<div class="card no-print">
+
+  <h2>🧾 Create Medicine Bill</h2>
+
+  <input
+    type="text"
+    id="customer"
+    placeholder="Customer Name"
+    oninput="calculate()"
+  >
+
+  <div id="selectedItems"></div>
+
+  <label><b>Discount (%)</b></label>
+
+  <input
+    type="number"
+    id="discount"
+    value="10"
+    min="0"
+    max="100"
+    oninput="calculate()"
+  >
+
+  <button onclick="calculate()">
+    Calculate Bill
+  </button>
+
+  <button class="print" onclick="window.print()">
+    🖨️ Print / Save Bill
+  </button>
+
+</div>
+
+<!-- PRINTABLE INVOICE -->
 <div class="card" id="bill">
 
-  <h2 style="text-align:center">DUA ONLINE PK</h2>
-  <p style="text-align:center">MEDICINE SALES BILL</p>
+  <h2 style="text-align:center">
+    DUA ONLINE PK
+  </h2>
+
+  <p style="text-align:center">
+    <b>MEDICINE SALES BILL</b>
+  </p>
+
   <hr>
 
-  <p><b>Customer:</b> <span id="billCustomer">Walk-in Customer</span></p>
-  <p><b>Date:</b> <span id="date"></span></p>
+  <p>
+    <b>Customer:</b>
+    <span id="billCustomer">Walk-in Customer</span>
+  </p>
+
+  <p>
+    <b>Date:</b>
+    <span id="date"></span>
+  </p>
 
   <div id="billItems"></div>
 
   <hr>
 
   <div class="total">
-    <div>Subtotal: Rs. <span id="subtotal">0.00</span></div>
-    <div>Discount: <span id="discountPercent">10</span>%</div>
-    <div>Discount Amount: Rs. <span id="discountAmount">0.00</span></div>
-    <div class="final">
-      NET PAYABLE: Rs. <span id="finalTotal">0.00</span>
+
+    <div>
+      Subtotal: Rs.
+      <span id="subtotal">0.00</span>
     </div>
+
+    <div>
+      Discount:
+      <span id="discountPercent">10</span>%
+    </div>
+
+    <div>
+      Discount Amount: Rs.
+      <span id="discountAmount">0.00</span>
+    </div>
+
+    <div class="final">
+      NET PAYABLE: Rs.
+      <span id="finalTotal">0.00</span>
+    </div>
+
   </div>
 
   <hr>
 
   <p style="text-align:center">
-    <b>Thank you for choosing DUA ONLINE PK.</b><br>
+    <b>Thank you for choosing DUA ONLINE PK.</b>
+    <br>
     Please keep this bill for your records.
   </p>
 
@@ -146,108 +274,356 @@ footer{
 </div>
 
 <footer>
-  © 2026 DUA ONLINE PK — All Rights Reserved
+  © 2026 DUA ONLINE PK
 </footer>
 
 <script>
 
-let items = [];
+/* =========================
+   PRODUCT DATABASE
+   Add your medicines here
+========================= */
 
-function addItem(name="Inj. Meronem", price=3033, qty=1){
+const products = [
 
-  items.push({
-    name:name,
-    price:price,
-    qty:qty
-  });
+  {
+    name: "Inj. Meronem",
+    price: 3033,
+    category: "Injection"
+  },
 
-  renderItems();
+  {
+    name: "Paracetamol",
+    price: 100,
+    category: "Tablet"
+  },
+
+  {
+    name: "Amoxicillin",
+    price: 250,
+    category: "Capsule"
+  }
+
+];
+
+
+/* =========================
+   BILL ITEMS
+========================= */
+
+let cart = [];
+
+
+/* =========================
+   SHOW PRODUCTS
+========================= */
+
+function showProducts(){
+
+  const box =
+    document.getElementById("products");
+
+  const search =
+    document.getElementById("search")
+    .value
+    .toLowerCase();
+
+  box.innerHTML = "";
+
+  products
+    .filter(product =>
+      product.name.toLowerCase().includes(search)
+    )
+    .forEach((product,index)=>{
+
+      box.innerHTML += `
+
+        <div class="product">
+
+          <div>
+
+            <b>${product.name}</b>
+
+            <br>
+
+            <small>
+              ${product.category}
+            </small>
+
+            <br>
+
+            <span class="price">
+              Rs. ${product.price.toFixed(2)}
+            </span>
+
+          </div>
+
+          <button
+            onclick="addProduct(${index})"
+          >
+            + Add
+          </button>
+
+        </div>
+
+      `;
+
+    });
+}
+
+
+/* =========================
+   ADD PRODUCT
+========================= */
+
+function addProduct(index){
+
+  const product = products[index];
+
+  const existing =
+    cart.find(item =>
+      item.name === product.name
+    );
+
+  if(existing){
+
+    existing.qty++;
+
+  }else{
+
+    cart.push({
+      name:product.name,
+      price:product.price,
+      qty:1
+    });
+
+  }
+
+  renderCart();
   calculate();
 }
 
-function renderItems(){
 
-  const box = document.getElementById("items");
-  box.innerHTML="";
+/* =========================
+   REMOVE PRODUCT
+========================= */
 
-  items.forEach((item,index)=>{
+function removeProduct(index){
+
+  cart.splice(index,1);
+
+  renderCart();
+  calculate();
+}
+
+
+/* =========================
+   CHANGE QUANTITY
+========================= */
+
+function changeQty(index,value){
+
+  let qty =
+    parseInt(value);
+
+  if(qty < 1){
+    qty = 1;
+  }
+
+  cart[index].qty = qty;
+
+  renderCart();
+  calculate();
+}
+
+
+/* =========================
+   DISPLAY CART
+========================= */
+
+function renderCart(){
+
+  const box =
+    document.getElementById(
+      "selectedItems"
+    );
+
+  box.innerHTML = "";
+
+  if(cart.length === 0){
+
+    box.innerHTML =
+      "<p>No medicine selected yet.</p>";
+
+    return;
+  }
+
+  cart.forEach((item,index)=>{
 
     box.innerHTML += `
-      <div class="row">
-        <input value="${item.name}"
-          onchange="items[${index}].name=this.value;calculate()">
 
-        <input type="number" min="1" value="${item.qty}"
-          onchange="items[${index}].qty=Number(this.value);calculate()">
+      <div class="bill-item">
 
-        <input type="number" min="0" value="${item.price}"
-          onchange="items[${index}].price=Number(this.value);calculate()">
+        <b>${item.name}</b>
 
-        <button class="remove"
-          onclick="removeItem(${index})">Remove</button>
+        <br>
+
+        Rs. ${item.price.toFixed(2)}
+
+        ×
+
+        <input
+          type="number"
+          min="1"
+          value="${item.qty}"
+          onchange="
+            changeQty(
+              ${index},
+              this.value
+            )
+          "
+          style="width:90px;
+                 display:inline-block;
+                 margin-left:8px;"
+        >
+
+        <button
+          class="remove"
+          onclick="
+            removeProduct(${index})
+          "
+        >
+          Remove
+        </button>
+
       </div>
+
     `;
+
   });
 }
 
-function removeItem(index){
-  items.splice(index,1);
-  renderItems();
-  calculate();
-}
+
+/* =========================
+   CALCULATE BILL
+========================= */
 
 function calculate(){
 
-  let subtotal=0;
-  const bill=document.getElementById("billItems");
+  let subtotal = 0;
 
-  bill.innerHTML="";
+  const bill =
+    document.getElementById(
+      "billItems"
+    );
 
-  items.forEach(item=>{
+  bill.innerHTML = "";
 
-    let amount=item.qty * item.price;
+  cart.forEach(item=>{
+
+    const amount =
+      item.price * item.qty;
+
     subtotal += amount;
 
     bill.innerHTML += `
-      <p>
-        <b>${item.name}</b><br>
-        ${item.qty} × Rs. ${item.price.toFixed(2)}
-        = <b>Rs. ${amount.toFixed(2)}</b>
-      </p>
+
+      <div class="bill-item">
+
+        <b>${item.name}</b>
+
+        <br>
+
+        ${item.qty}
+        ×
+        Rs. ${item.price.toFixed(2)}
+
+        =
+
+        <b>
+          Rs. ${amount.toFixed(2)}
+        </b>
+
+      </div>
+
     `;
+
   });
 
-  let discountPercent =
-    Number(document.getElementById("discount").value) || 0;
 
-  let discountAmount =
-    subtotal * discountPercent / 100;
+  const discountPercent =
+    Number(
+      document.getElementById(
+        "discount"
+      ).value
+    ) || 0;
 
-  let finalTotal =
-    subtotal - discountAmount;
 
-  document.getElementById("subtotal").textContent =
+  const discountAmount =
+    subtotal *
+    discountPercent /
+    100;
+
+
+  const finalTotal =
+    subtotal -
+    discountAmount;
+
+
+  document.getElementById(
+    "subtotal"
+  ).textContent =
     subtotal.toFixed(2);
 
-  document.getElementById("discountPercent").textContent =
+
+  document.getElementById(
+    "discountPercent"
+  ).textContent =
     discountPercent;
 
-  document.getElementById("discountAmount").textContent =
+
+  document.getElementById(
+    "discountAmount"
+  ).textContent =
     discountAmount.toFixed(2);
 
-  document.getElementById("finalTotal").textContent =
+
+  document.getElementById(
+    "finalTotal"
+  ).textContent =
     finalTotal.toFixed(2);
 
-  document.getElementById("billCustomer").textContent =
-    document.getElementById("customer").value || "Walk-in Customer";
+
+  document.getElementById(
+    "billCustomer"
+  ).textContent =
+    document.getElementById(
+      "customer"
+    ).value ||
+    "Walk-in Customer";
+
 }
 
-document.getElementById("customer").addEventListener("input",calculate);
 
-document.getElementById("date").textContent =
+/* =========================
+   DATE
+========================= */
+
+document.getElementById(
+  "date"
+).textContent =
   new Date().toLocaleDateString();
 
-addItem();
+
+/* =========================
+   START WEBSITE
+========================= */
+
+showProducts();
+
+renderCart();
+
+calculate();
 
 </script>
 
